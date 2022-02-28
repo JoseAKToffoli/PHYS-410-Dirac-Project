@@ -1,0 +1,543 @@
+\documentclass[a4page,12pt]{article}
+\usepackage{mathptmx}
+\usepackage{fullpage}
+\usepackage[top=2cm, bottom=4.5cm, left=1.5cm, right=1.5cm]{geometry}
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{lastpage}
+\usepackage{enumerate}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{comment}
+\usepackage{bbold}
+\usepackage{slashed}
+
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+
+% Header.
+\pagestyle{fancyplain}
+\headheight 35pt
+\lhead{\Name}
+\lhead{\Name\\\StudentID}           
+\chead{\textbf{\Large Deriving Dirac's Equation}}
+\rhead{\course \\ \today}
+\lfoot{}
+\cfoot{}
+\rfoot{\small\thepage}
+\headsep 1.5em
+
+
+
+%%%%%%%%%
+%  Cheap tricks  %
+%%%%%%%%%
+
+% Quick labels.
+\newcommand{\eqL}[2]{
+	\begin{equation} \label{#1}
+		#2
+	\end{equation}
+}
+
+% Quick conclusions.
+\newcommand{\conclude}[2]{\eqL{#1}{\therefore \boxed{#2}}}
+
+% Add image.
+\newcommand{\addImage}[4]{
+	\begin{figure}[!h]
+		\centering
+		\includegraphics[width=#4\linewidth]{#2}
+		\caption{#3}
+		\label{fig:#1}
+	\end{figure}
+}
+
+% Measurements with units.
+\newcommand{\units}[2]{#1\;\textrm{#2}}
+
+% Vectors.
+\newcommand{\vect}[1]{\overrightarrow{#1}}
+
+% Unit Vectors.
+\newcommand{\uvect}[1]{\hat{#1}}
+
+%%%%%%%%
+% Student Info %
+%%%%%%%%
+
+% Change for each class.
+\newcommand\course{PHYS 410}
+\newcommand\hwnumber{2}                  
+\newcommand\Name{Dream Team}
+\newcommand\StudentID{Ben, Emily, Jose}  
+
+%%%%%%%%%%
+% Extra text styles  %
+%%%%%%%%%%
+
+% Hyperlinks
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  linkbordercolor={0 0 1}
+}
+
+%%%%%%%%%%
+% Document starts  %
+%%%%%%%%%%
+
+\begin{document}
+
+Now, let us take a look on one way to derive one of Dirac's most brilliant creations, \emph {Dirac's Equation} (DE). But first, we must go throught some basic definitions in Quantum Mechanics.
+
+%\section{Background knowledge required.}
+
+\begin{comment}
+
+	\subsection{Tensors and four vectors.}
+
+	 	We will need some information on tensors and four vectors before we move forward.
+		
+		\subsubsection{Contravariant four vector of momentum.}
+
+			The contravariant four vector of momentum of a particle with particular energy, $E$, and three momentum, $\vec{p}$, is defined as following.
+
+			\[
+				p^\mu =
+				\begin{pmatrix}
+					p^0 & p^1 & p^2 & p^3
+				\end{pmatrix}
+			\]	
+		
+			\eqL{fourMomentum}{
+				p^\mu = 
+				\begin{pmatrix}
+					\frac{E}{c} & \vec{p}
+				\end{pmatrix}
+			}
+
+		\subsubsection{Minkowski metric tensor.}
+
+			Minkowski Metric Tensor, is a rank two tensor we will be using for deriving DE. It is defined as following.
+
+		\eqL{metricTensor}{ 
+			\eta_{\mu \nu} = 
+			\begin{pmatrix}
+				1 & 0 & 0 & 0\\
+				0 & -1 & 0 & 0\\
+				0 & 0 & -1 & 0\\
+				0 & 0 & 0 & -1\\
+			\end{pmatrix}
+		}
+
+			Now if we allow the metric tensor, Eq.(\ref{metricTensor}), to act on the four vector of momentum, Eq.(\ref{fourMomentum}), we get the following.
+
+		\[
+			\eta_{\mu \nu} \, p^\mu = 
+			\begin{pmatrix}
+				1 & 0 & 0 & 0\\
+				0 & -1 & 0 & 0\\
+				0 & 0 & -1 & 0\\
+				0 & 0 & 0 & -1\\
+			\end{pmatrix}
+			\begin{pmatrix}
+					p^0 & p^1 & p^2 & p^3
+			\end{pmatrix}
+		\]
+	
+		\[
+			\eta_{\mu \nu} \, p^\mu = 
+			\begin{pmatrix}
+					p^0 & -p^1 & -p^2 & -p^3
+			\end{pmatrix}
+		\]
+			
+			Or re writing it more compactly.
+
+		\[
+			\eta_{\mu \nu} \, p^\mu = 
+			\begin{pmatrix}
+					\frac{E}{c} & -\vec{p}
+			\end{pmatrix}
+		\]
+
+			Which we will now define as following.
+
+		\eqL{fourMomentumNegative}{
+			\eta_{\mu \nu} \, p^\mu = p_\nu
+		}
+
+		Next, we take a look at the dot product between two four vectors of momentum, Eq.(\ref{fourMomentum}).
+
+		\[
+			\bar{p}\cdot\bar{p} = \eta_{\mu \nu} \, p^\mu \, p^\nu
+		\]
+		
+		Where we allow the metric tensor to act on $p^\mu$, just as in Eq.(\ref{fourMomentumNegative}).
+
+		\[
+			\bar{p}\cdot\bar{p} = p_\nu \, p^\nu
+		\]
+
+		But we can now expand the inner product on the right hand side of our equation.
+
+		\[
+			p_\nu \, p^\nu = 
+			\begin{pmatrix}
+					\frac{E}{c} & \vec{p}
+			\end{pmatrix}
+			\cdot
+			\begin{pmatrix}
+					\frac{E}{c} & \vec{p}
+			\end{pmatrix}
+		\]
+
+		\eqL{momentumDotProduct}{
+			p_\nu \, p^\nu = \frac{E^2}{c^2} - |\vec{p}|^2
+		}
+
+		Which we will be using further on.
+
+\end{comment}
+
+	%\subsection{Quantum Mechanics.}
+	\section{Quantum Mechanics Background.}
+
+		We have to define the anticommutator, the Pauli matrices, and some operators from quantum mechanics.
+
+		%\subsubsection{Anticommutator.}
+		\subsection{Anticommutator.}
+
+			Just like the commutator, the anticommutator is a tool from ring theory that can be represented using Lie bracket, thus every associative algebra may be interpreted as lie algebra. The anticommutator acts as following.
+
+		\eqL{anticommutatorDef}{
+			\{a,b\} = a\,b + b\,a
+		}
+
+			Where $a$ and $b$ are rings\footnote{Ring: Set R that follows the ring axions.}.
+
+		%\subsubsection{Identity operator.}
+		\subsection{Identity operator.}
+
+			The identity operator behaves essentially the same as a identity matrix\footnote{Identity Matrix: A $n\times n$ square matrix with ones on the main diagonal and zeros elsewhere.}, where we can see its behaviour as an operator bellow acting on a general time independent wave function, $\psi$.
+
+		\[
+			\hat{\mathbb{1}} \,\psi = \psi
+		\]
+
+		\subsubsection{Pauli Matrices}
+
+			A spin operator can be defined as following.
+
+			\[\hat{S}_i = \frac{\hslash }{2} \, \sigma_i \;\;\; ,\forall \, i \in \{1,2,3\}\]
+
+			With the following being defined as the Pauli Matrices.
+
+			\[
+				\sigma_i = 
+				\begin{pmatrix}
+					\delta_{j3} & \delta_{j1} - i \,\delta_{j2} \\
+					\delta_{j1} + i \,\delta_{j2} & -\delta_{j3}
+				\end{pmatrix}
+			\]
+\vspace{0.5cm}
+		%\subsubsection{Energy and momentum operators.}
+		\subsection{Energy and momentum operators.}
+
+			In quantum mechanics we allow Energy and Momentum to be represented as operators, which looks like the following.
+
+			\[
+				E \to i \, \hslash \, \frac{\partial}{\partial t}
+			\]
+
+			\[
+				\vec{p} \to -i \,\vec{\nabla}
+			\]
+			
+			Last but not least, we have the hamiltonian operator, that has energy as its eigenvalue when operating on a general time dependent wave equation.
+
+			\[
+				\hat{H} \, \Psi = E \, \Psi 
+			\]
+
+			This should sufice the the background knoledge needed for deriving DE.
+
+\section{Deriving DE.}
+
+	Dirac started by looking at the relativistic energy equation proposed by Einstein. 
+
+		\[
+			E^2 = m^2 \, c^4 + p^2 \, c^2
+		\]
+
+	Where, $m$ is the mass of the particle at rest, $c$ is the speed of light, and $p$ is the magnitude of the three vector momentum of the particle. At this point we could use the above to derive the Klein Gordon Equation,which was found to have a variety of problems including its probability density cannot made to be positive-defined indefinitely, and partices could be sent back in time. Dirac, in order to solve that problem, had an idea to find a Hilber Space for which the right hand side could be written as a perfect square and thus take the square root of both sides.
+
+		\[
+			E = \sqrt{m^2 \, c^4 + p^2 \, c^2}
+		\]
+
+		\[
+			m^2\,c^4 + p^2 \, c^2 = \left( c \,\vec{\alpha}\cdot \vec{p} + \beta\,m\,c^2 \right)^2
+		\]
+
+	Where, Dirac used a constant vector, $\vec{\alpha}$, to make the perfect square dimensionally correct -- ie. can only add two tensors of the same rank -- and a constant, $\beta$, in such way that this would be the most generic perfect square. Now, Dirac needed to find the values for these constants, and he did so by analysing the expansion of the right hand side.
+
+		\[
+			m^2\,c^4 + p^2 \, c^2 = \left( c \,\alpha_1\, p_1 +  c \,\alpha_2\, p_2+  c \,\alpha_3\, p_3 + \beta\,m\,c^2 \right)^2
+		\]
+
+	So he quickly noticed that the above would only hold true if the following is respected.
+
+		\[
+			\alpha_1^2 = \alpha_2^2 = \alpha_3^2 = \beta^2 = 1
+		\]
+		\[
+			\alpha_i \, \alpha_j + \alpha_j \, \alpha_i = 0 \;\;\; ,\forall \, i \neq j
+		\]
+		\[
+			\alpha_i \, \beta + \beta \, \alpha_i = 0 \;\;\; ,\forall \, i 
+		\]
+
+	Or using the aticommutator notation.
+		
+		\[
+			\beta^2 = 1
+		\]
+		\[
+			\{\alpha_i, \alpha_j\} = \delta_{i j} \;\;\; ,\forall \, i, j
+		\]
+		\[
+			\{\alpha_i, \beta\} = 0 \;\;\; ,\forall \, i
+		\]
+ 	
+	Dirac found that the above could not hold for any constant $\alpha_i, \beta \, \in  \mathbb {C}$. But here is where DE wears its hat in history, Dirac found that the simplest solution to satisfy the above equations would be to have $\vec{\alpha}$ and $\beta$ be $4\times 4$ matrices defined as follows.
+
+		\eqL{alpha}{
+			\alpha_i = 
+			\begin{pmatrix}
+				0 & \sigma_i\\
+				\sigma_i & 0
+			\end{pmatrix}
+			\;\;\; , \forall \, i \in {1,2,3}
+		}
+		\eqL{beta}{
+			\beta = 
+			\begin{pmatrix}
+				\hat{\mathbb{1}} & 0\\
+				0 & \hat{\mathbb{1}}
+			\end{pmatrix}
+		}
+
+	Which means that the Dirac's wave equation had solutions in the form on a 4 component collum vector -- ie. Dirac Spinor -- with two spin $1/2$ representation -- ie. $\left(\frac{1}{2},\frac{1}{2}\right)$ -- which works perfectly to describe free electrons. So Dirac basically had spin ``falling off" his relativistic equation; this was revolutionary since Schrödinger's equation had to have spin stacked onto it, thus having something this elegant was a very important breakthrough in the field. Now, it was easy for Dirac to take the square root!
+
+		\[
+			E = \sqrt{\left( c \,\vec{\alpha}\cdot \vec{p} + \beta\,m\,c^2 \right)^2}
+		\]
+		\eqL{diracEnergy}{
+			\therefore \; E =  c \,\vec{\alpha}\cdot \vec{p} + \beta\,m\,c^2 
+		}
+
+	Armed with energy in the form above, Dirac could write the hamiltonian for his equation as follows.
+
+		\[
+			\hat{H} = c \,\vec{\alpha}\cdot \vec{p} + \beta\,m\,c^2 
+		\]
+
+	Allowing the hamiltonian to act on a Dirac Spinor.
+
+		\[
+			\hat{H} \, \Psi = E \, \Psi
+		\]		
+		\[
+			c \,\vec{\alpha}\cdot \vec{p}\, \Psi  + \beta\,m\,c^2  \, \Psi = E \, \Psi
+		\]
+
+	Dirac, used the operator definition of energy on the above.
+
+		\[
+			c \,\vec{\alpha}\cdot \vec{p}\, \Psi + \beta\,m\,c^2  \, \Psi  = i \, \hslash \, \frac{\partial}{\partial t} \, \Psi 
+		\]
+	
+	And initially presented his solution using index notation.
+
+		\eqL{DiracEqnI}{
+			\left(\beta\,m\,c^2 + c \, \sum_{n=1}^{3} \alpha_n\, p_n  \right)  \, \Psi  = i \, \hslash \, \frac{\partial}{\partial t} \, \Psi 
+		}
+	
+	But to get it into a more familiar form, we move all terms to the right in vector form.
+
+		\[
+			\left( i \, \hslash \, \frac{\partial}{\partial t} - c \,\vec{\alpha}\cdot \vec{p} - \beta\,m\,c^2 \right) \Psi  = 0
+		\]
+	
+	Use the operator definition of momentum.
+
+		\[
+			\left( i \, \hslash \, \frac{\partial}{\partial t} + i\, c \,\vec{\alpha}\cdot \vec{\nabla} - \beta\,m\,c^2 \right) \Psi  = 0
+		\]
+
+		\[
+			 \left( i \left( \hslash \, \frac{\partial}{\partial t} + \, c \,\vec{\alpha}\cdot \vec{\nabla}\right) - \beta\,m\,c^2 \right) \Psi  = 0
+		\]
+
+	We let, by convension of Special Relativity, $c = \hslash = 1$.
+
+		\[
+			 \left( i \left( \frac{\partial}{\partial t} + \vec{\alpha}\cdot \vec{\nabla}\right) - \beta\,m \right) \Psi  = 0
+		\]
+
+	And since we found $\beta$ to be a $4\times 4$ identity matrix, we can omit it.
+	
+		\[
+			 \left( i \left( \frac{\partial}{\partial t} + \vec{\alpha}\cdot \vec{\nabla}\right) - m \right) \Psi  = 0
+		\]
+
+	Where we define $\slashed{\partial}  = \left( \frac{\partial}{\partial t} + \vec{\alpha}\cdot \vec{\nabla}\right) $. So we have the well known version of DE.
+
+		\eqL{diracEquation}{
+			 \left( i\,\slashed{\partial}  - m \right) \Psi  = 0
+		} 
+	
+\newpage
+
+\section{Solutions to DE.}
+
+	Let us now try and understand a bit more about the wonders of this equation. If we were to take a plane wave solution for DE, it would have the form of.
+
+	\eqL{planeWave}{
+		\Psi = \omega \, e^{\frac{i}{\hslash}\left(\vec{p}\cdot\vec{x} - E \, t\right)}
+	}
+	
+	Where $\omega$ is a four component collum vector.
+
+	\[
+		\omega = 
+		\begin{pmatrix}
+			\chi \\
+			\phi
+		\end{pmatrix}
+	\]
+
+	If we plug in our plane wave solution, Eq.(\ref{planeWave}), into DE, we find that.
+	
+	\[
+		\left(\beta\,m\,c^2 + c \, \sum_{n=1}^{3} \alpha_n\, p_n  \right)  \,\Psi  = i \, \hslash \, \frac{\partial}{\partial t} \, \Psi
+	\]
+
+	\[
+		\left(\beta\,m\,c^2 + c \, \sum_{n=1}^{3} \alpha_n\, p_n  \right)  \,\left(\omega \, e^{\frac{i}{\hslash} \left(\vec{p}\cdot\vec{x} - E \, t\right)}\right)  = i \, \hslash \, \frac{\partial}{\partial t} \, \left(\omega \, e^{\frac{i}{\hslash} \left(\vec{p}\cdot\vec{x} - E \, t\right)}\right)
+	\]
+
+	\[
+		\left(\beta\,m\,c^2 + c \, \sum_{n=1}^{3} \alpha_n\, p_n  \right)  \,\left(\omega \, e^{\frac{i}{\hslash} \left(\vec{p}\cdot\vec{x} - E \, t\right)}\right)  = E \, \left(\omega \, e^{\frac{i}{\hslash} \left(\vec{p}\cdot\vec{x} - E \, t\right)}\right)
+	\]
+
+	\[
+		\left(\beta\,m\,c^2 + c \, \sum_{n=1}^{3} \alpha_n\, p_n  \right)  \, \omega = E \,\omega
+	\]
+
+	Moving everything to the right hand side.
+
+	\[
+		\left(E - \beta\,m\,c^2 - c \, \sum_{n=1}^{3} \alpha_n\, p_n  \right)  \, \omega = 0
+	\]
+
+	Which now can be written in matrix form using, Eq.(\ref{alpha}) and Eq.(\ref{beta}), as follows.
+
+	\[
+		\begin{pmatrix}
+			E - m\,c^2 & - c \,\vec{\sigma}\cdot\vec{p} \\
+			-c \,\vec{\sigma}\cdot\vec{p} & E + m\,c^2 
+		\end{pmatrix}
+		\begin{pmatrix}
+			\chi \\
+			\phi
+		\end{pmatrix}
+		= 0
+	\]
+
+	Let us not multiply out the above.
+
+	\[
+	 \begin{cases} 
+	      \left(E - m\,c^2\right) \, \chi - \left(c \,\vec{\sigma}\cdot\vec{p}\right) \, \phi = 0 \\\\
+	      - \left(c \,\vec{\sigma}\cdot\vec{p}\right) \, \chi + \left(E + m\,c^2\right) \, \phi= 0
+  	\end{cases}
+	\]
+	
+	Solving the top one for $\chi$ and the lower one for $\phi$.
+
+	\[
+	 \begin{cases} 
+	      \left(E - m\,c^2\right) \, \chi = \left(c \,\vec{\sigma}\cdot\vec{p}\right) \, \phi \\\\
+	      \left(E + m\,c^2\right) \, \phi= \left(c \,\vec{\sigma}\cdot\vec{p}\right)\, \chi
+  	\end{cases}
+	\]
+	
+	\[
+	 \begin{cases} 
+	      \chi = \dfrac{c \,\vec{\sigma}\cdot\vec{p}}{E - m\,c^2} \, \phi \\\\
+	      \phi= \dfrac{c \,\vec{\sigma}\cdot\vec{p}}{E + m\,c^2} \, \chi
+  	\end{cases}
+	\]	
+
+	Plug the bottom equation into the top one.
+
+	\[
+		\chi = \dfrac{c \,\vec{\sigma}\cdot\vec{p}}{E - m\,c^2} \, \dfrac{c \,\vec{\sigma}\cdot\vec{p}}{E + m\,c^2} \, \chi
+	\]
+
+	Multiply it out.
+	
+	\[
+		\chi = \dfrac{c^2 \,\left(\vec{\sigma}\cdot\vec{p}\right)^2}{E^2 - m^2\,c^4} \, \chi
+	\]
+	
+	Note that a the pauli matrices dotted into the momentum, all squared gives us the magnitude of momentum squared.
+
+	\[
+		\chi = \dfrac{c^2 \,p^2}{E^2 - m^2\,c^4} \, \chi
+	\]
+
+	Moving everything to the right hand side of the equation above.
+
+	\[
+		\left(\dfrac{c^2 \,p^2}{E^2 - m^2\,c^4} - 1 \right) \, \chi = 0
+	\]
+
+	Since $\chi = 0$ would imply trivial solutions, we know that the argument in the brackets to be zero.
+
+	\[
+		\dfrac{c^2 \,p^2}{E^2 - m^2\,c^4} - 1 = 0
+	\]
+
+	Solving for $E^2$, we find.
+
+	\[
+		E^2 = m^2\,c^4 + c^2 \,p^2
+	\]
+
+	Which is the relativistic energy proposed by Einstein we started with when deriving DE. Now by taking the square root of the above.
+
+	\[
+		\left|E\right| = \sqrt{m^2\,c^4 + c^2 \,p^2}
+	\]
+
+	\[
+		\implies E \in \left\{\sqrt{m^2\,c^4 + c^2 \,p^2}, - \sqrt{m^2\,c^4 + c^2 \,p^2} \right\}
+	\]
+
+	There are no mathematical constraints that prevents us from taking the negative solution for our energy, $E$. But what would be the interpretation of this ``negative energy"? These energies levels that now could not only go bellow the ground state but become arbitrarily negative seem to be very problematic, but Dirac was able to come up with an explanation. His rational was that, since electrons are fermions and must obey the pauli exclusion principle, they cannot occupy the same energy levels simultaneously, thus we just have to ``filed up" all the negative energies with an infinite number of electrons -- the Dirac Sea. So he proposed that what we think of as a vaccum, is in reallity a ``sea" of infinite parrticles filling up all the negative energy levels.
+
+	Of course we now know that the Dirac Sea was not the correct interpretation since later that year Carl David Anderson discovered the positron on 2 August, 1932. The anti matter version of the electron was the actual reason behind second solution for the energy levels. So Dirac's Equation was able to predict the existance of anti matter, before anyone had ever considered a particle of such nature.
+
+% This was another major breakthrough that just ``fell off" DE. Dirac, in attempt to make sense of it, proposed 
+
+% Now we know that this second solution for energy is in reality refering to the positron -- ie. $e^+$ -- the anti matter version of the electron.
+	
+
+\end{document}
